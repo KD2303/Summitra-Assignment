@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
+import { formatTicketCode } from '../lib/ticket';
 import {
   Calendar,
   Ticket,
@@ -853,8 +854,8 @@ export function AdminDashboardPage() {
                     <tbody className="divide-y divide-white/5">
                       {bookings.map((b) => (
                         <tr key={b.id} className="hover:bg-white/[0.02] transition-colors">
-                          <td className="p-4 font-mono text-[12px] font-bold text-[#c084fc]">
-                            #{b.id}
+                          <td className="p-4 font-mono text-[12px] font-bold text-[#c084fc] whitespace-nowrap">
+                            {b.ticket_code || formatTicketCode(b.event_id, b.id)}
                           </td>
                           <td className="p-4 font-bold text-white whitespace-nowrap">
                             <div className="flex items-center gap-2.5">
@@ -1161,7 +1162,7 @@ export function AdminDashboardPage() {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-mono text-[12px] font-extrabold text-[#c084fc] bg-[#8617d0]/20 border border-[#8617d0]/40 px-2.5 py-0.5 rounded-full">
-                    Pass #{viewingPass.id}
+                    Pass #{viewingPass.ticket_code || formatTicketCode(viewingPass.event_id, viewingPass.id)}
                   </span>
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                     <ShieldCheck className="w-3 h-3" />

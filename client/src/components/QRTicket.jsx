@@ -2,14 +2,18 @@ import React, { useEffect, useState, useRef } from 'react';
 import QRCode from 'qrcode';
 import html2canvas from 'html2canvas';
 import { Download, Calendar, MapPin, Ticket, ShieldCheck } from 'lucide-react';
+import { formatTicketCode } from '../lib/ticket';
 
 export function QRTicket({ booking }) {
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState('');
   const [isExporting, setIsExporting] = useState(false);
   const ticketRef = useRef(null);
 
-  const formattedDate = booking.event_date
-    ? new Date(booking.event_date).toLocaleDateString('en-US', {
+  const eventId = booking?.event_id || booking?.eventId;
+  const ticketCode = booking?.ticket_code || booking?.ticketCode || formatTicketCode(eventId, booking?.id);
+
+  const formattedDate = booking?.event_date || booking?.eventDate
+    ? new Date(booking.event_date || booking.eventDate).toLocaleDateString('en-US', {
         weekday: 'long',
         month: 'short',
         day: 'numeric',
@@ -21,8 +25,9 @@ export function QRTicket({ booking }) {
     async function generateQR() {
       try {
         const qrPayload = JSON.stringify({
+          ticketCode,
           ticketId: booking.id,
-          eventId: booking.event_id,
+          eventId,
           attendee: booking.name,
           email: booking.email,
           qty: booking.quantity,
@@ -46,7 +51,7 @@ export function QRTicket({ booking }) {
     if (booking?.id) {
       generateQR();
     }
-  }, [booking]);
+  }, [booking, ticketCode, eventId]);
 
   const handleDownloadTicket = async () => {
     if (!ticketRef.current) return;
@@ -60,7 +65,7 @@ export function QRTicket({ booking }) {
       const image = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = image;
-      link.download = `Summitra-Ticket-${booking.id}.png`;
+      link.download = `Summitra-Ticket-${ticketCode}.png`;
       link.click();
     } catch (err) {
       console.error('Error exporting ticket PNG:', err);
@@ -90,7 +95,7 @@ export function QRTicket({ booking }) {
                 Official Summit Pass
               </span>
               <span className="font-bold text-lg text-text-primary">
-                Summitra Pass #{booking.id}
+                Summitra Pass #{ticketCode}
               </span>
             </div>
           </div>
@@ -153,7 +158,7 @@ export function QRTicket({ booking }) {
               Present this verified QR ticket to admission staff at entry turnstiles.
             </p>
             <p className="text-[11px] font-mono text-[#c084fc] pt-2">
-              REF: {booking.idempotency_key ? booking.idempotency_key.slice(0, 16) : `TKT-${booking.id}`}
+              REF: {ticketCode}
             </p>
           </div>
 

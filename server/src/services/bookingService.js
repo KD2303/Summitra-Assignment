@@ -119,6 +119,8 @@ export const bookingService = {
       return {
         id: bookingInsert.insertId,
         eventId: evId,
+        ticketCode: `EVT${String(evId).padStart(2, '0')}-TKT-${bookingInsert.insertId}`,
+        ticket_code: `EVT${String(evId).padStart(2, '0')}-TKT-${bookingInsert.insertId}`,
         eventTitle: event.title,
         eventDate: event.date,
         eventLocation: event.location,
@@ -174,7 +176,9 @@ export const bookingService = {
       throw new AppError('NOT_FOUND', `Booking #${id} not found`, 404);
     }
 
-    return rows[0];
+    const booking = rows[0];
+    booking.ticket_code = booking.ticket_code || `EVT${String(booking.event_id).padStart(2, '0')}-TKT-${booking.id}`;
+    return booking;
   },
 
   /**
@@ -207,6 +211,9 @@ export const bookingService = {
     sql += ' ORDER BY b.booking_date DESC LIMIT 200';
 
     const [rows] = await pool.query(sql, params);
-    return rows;
+    return (rows || []).map(b => ({
+      ...b,
+      ticket_code: b.ticket_code || `EVT${String(b.event_id).padStart(2, '0')}-TKT-${b.id}`
+    }));
   }
 };
