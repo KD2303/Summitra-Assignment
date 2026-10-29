@@ -1,32 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Calendar, Menu, X, Shield, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  const [isVisible, setIsVisible] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Close mobile menu on route change
   useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
+    let lastY = window.scrollY;
 
-  // Trap focus and handle Escape key for mobile menu accessibility
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        setIsOpen(false);
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const delta = currentY - lastY;
+
+      setIsScrolled(currentY > 20);
+
+      // Always show at the top of the page
+      if (currentY <= 60) {
+        setIsVisible(true);
+      } else if (delta > 6) {
+        // Scrolling down -> slide out/hide
+        setIsVisible(false);
+      } else if (delta < -6) {
+        // Scrolling up -> slide in/show
+        setIsVisible(true);
       }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
 
-  const navLinks = [
-    { name: 'Discover Events', path: '/events' },
-    { name: 'Architecture', path: '/#features' },
-    { name: 'Admin Portal', path: '/admin' }
-  ];
+      lastY = currentY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
@@ -35,101 +40,51 @@ export function Navbar() {
         Skip to main content
       </a>
 
-      <header className="sticky top-0 z-40 w-full border-b border-surface-border bg-black/80 backdrop-blur-md">
+      <header
+        className={`sticky top-0 z-50 w-full bg-[#8617d0]/95 backdrop-blur-md border-b border-white/10 transition-transform duration-300 ease-out will-change-transform ${
+          isScrolled ? 'shadow-xl' : ''
+        } ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          {/* Brand Logo */}
+          {/* Clean Brand Logo */}
           <Link
             to="/"
-            className="flex items-center gap-3 group focus-visible:ring-2 focus-visible:ring-brand-light rounded-md px-1 py-1"
+            className="text-base sm:text-lg font-bold tracking-tight text-white hover:opacity-90 transition-opacity focus-visible:ring-2 focus-visible:ring-white rounded-md px-1 py-1"
             aria-label="Summitra Homepage"
           >
-            <div className="w-10 h-10 rounded-xl bg-surface-raised flex items-center justify-center group-hover:bg-surface-strong transition-colors duration-fast shadow-[0_0_20px_rgba(134,23,208,0.5)]">
-              <Sparkles className="w-5 h-5 text-text-primary" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold text-xl tracking-tight text-text-primary flex items-center gap-1.5">
-                SUMMITRA
-                <span className="inline-block w-2 h-2 rounded-full bg-feedback-success animate-pulse" title="Real-time WebSocket Live" />
-              </span>
-              <span className="text-xs text-text-tertiary tracking-wide uppercase font-semibold">
-                Smart Event Booking
-              </span>
-            </div>
+            Summitra
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
-            {navLinks.map((link) => {
-              const isActive = location.pathname === link.path;
-              return (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`text-sm font-semibold transition-colors duration-fast relative py-1 focus-visible:ring-2 focus-visible:ring-brand-light rounded ${
-                    isActive
-                      ? 'text-text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-surface-raised'
-                      : 'text-text-tertiary hover:text-text-primary'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </nav>
+          {/* Right Section: Contact details & Buy Ticket Button */}
+          <div className="flex items-center gap-6 sm:gap-8">
+            {/* Contact details */}
+            <div className="hidden sm:flex flex-col text-right text-xs leading-snug text-white/90 font-medium">
+              <a
+                href="tel:8881234567"
+                className="hover:text-white transition-colors"
+              >
+                (888) 123 4567
+              </a>
+              <a
+                href="mailto:info@example.com"
+                className="text-white/75 hover:text-white transition-colors text-[11px]"
+              >
+                info@example.com
+              </a>
+            </div>
 
-          {/* Desktop Primary CTA */}
-          <div className="hidden md:flex items-center gap-4">
+            {/* Signature Webflow Pill CTA */}
             <Link
               to="/events"
-              className="px-6 py-2.5 rounded-xl bg-surface-raised hover:bg-surface-strong text-text-primary text-sm font-bold transition-all duration-fast transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:ring-2 focus-visible:ring-brand-light flex items-center gap-2 shadow-[0_4px_14px_rgba(134,23,208,0.39)]"
+              className="inline-flex items-center gap-2.5 pl-5 pr-2 py-2 rounded-full bg-white text-black font-extrabold text-sm hover:bg-zinc-100 transition-all duration-200 group shadow-lg"
             >
-              <Calendar className="w-4 h-4" />
-              Browse Events
+              <span>Buy Ticket</span>
+              <span className="w-7 h-7 rounded-full bg-[#8617d0] text-white flex items-center justify-center group-hover:scale-105 group-hover:translate-x-0.5 transition-transform duration-200">
+                <ArrowRight className="w-3.5 h-3.5" />
+              </span>
             </Link>
           </div>
-
-          {/* Mobile Menu Button */}
-          <div className="flex md:hidden">
-            <button
-              type="button"
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2.5 rounded-lg text-text-tertiary hover:text-text-primary bg-surface-card border border-surface-border focus-visible:ring-2 focus-visible:ring-brand-light min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label={isOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isOpen}
-              aria-controls="mobile-navigation"
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
         </div>
-
-        {/* Mobile Navigation Drawer */}
-        {isOpen && (
-          <div
-            id="mobile-navigation"
-            className="md:hidden border-b border-surface-border bg-black/95 px-4 pt-4 pb-6 space-y-4 shadow-2xl"
-          >
-            <nav className="flex flex-col space-y-3">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className="px-4 py-3 rounded-lg text-base font-semibold text-text-primary hover:bg-surface-card transition-colors min-h-[44px] flex items-center"
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <Link
-                to="/events"
-                className="w-full mt-2 px-5 py-3 rounded-xl bg-surface-raised text-center text-text-primary font-bold shadow-[0_4px_14px_rgba(134,23,208,0.39)] min-h-[44px] flex items-center justify-center gap-2"
-              >
-                <Calendar className="w-4 h-4" />
-                Browse Events
-              </Link>
-            </nav>
-          </div>
-        )}
       </header>
     </>
   );

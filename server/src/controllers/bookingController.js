@@ -52,5 +52,19 @@ export const bookingController = {
     } catch (err) {
       next(err);
     }
+  },
+
+  /**
+   * GET /api/bookings
+   * Admin view all bookings with optional event filter and customer search
+   */
+  async listAll(req, res, next) {
+    try {
+      const { eventId, search } = req.query;
+      const bookings = await bookingService.listAllBookings({ eventId, search });
+      res.status(200).json({ bookings });
+    } catch (err) {
+      next(err);
+    }
   }
 };

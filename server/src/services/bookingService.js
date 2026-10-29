@@ -78,8 +78,10 @@ export const bookingService = {
         });
       }
 
-      // Determine unit price server-side
+      // Determine unit price and validated category ID server-side
+      let validCatId = null;
       let unitPrice = parseFloat(event.price);
+      let categoryName = 'Standard Pass';
 
       if (catId) {
         const [categories] = await conn.execute(
@@ -87,7 +89,9 @@ export const bookingService = {
           [catId, evId]
         );
         if (categories && categories.length > 0) {
+          validCatId = categories[0].id;
           unitPrice = parseFloat(categories[0].price);
+          categoryName = categories[0].name;
         }
       }
 
@@ -100,11 +104,11 @@ export const bookingService = {
         [newAvailableSeats, evId]
       );
 
-      // Insert booking record
+      // Insert booking record with validated category ID
       const [bookingInsert] = await conn.execute(
         `INSERT INTO bookings (event_id, category_id, name, email, mobile, quantity, total_amount, idempotency_key)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-        [evId, catId, name, email, mobile, qty, totalAmount, idempotencyKey || null]
+        [evId, validCatId, name, email, mobile, qty, totalAmount, idempotencyKey || null]
       );
 
       // Consume lock if provided
@@ -116,6 +120,9 @@ export const bookingService = {
         id: bookingInsert.insertId,
         eventId: evId,
         eventTitle: event.title,
+        eventDate: event.date,
+        eventLocation: event.location,
+        categoryName,
         status: 'confirmed',
         totalAmount,
         quantity: qty,
@@ -168,5 +175,38 @@ export const bookingService = {
     }
 
     return rows[0];
+  },
+
+  /**
+   * List all bookings (Admin access with event filter and customer search)
+   */
+  async listAllBookings({ eventId = null, search = '' } = {}) {
+    let sql = `
+      SELECT b.id, b.event_id, b.category_id, b.name, b.email, b.mobile, b.quantity, 
+             b.total_amount, b.booking_date, b.status, 
+             e.title as event_title, e.location as event_location, e.date as event_date,
+             tc.name as category_name
+      FROM bookings b
+      JOIN events e ON b.event_id = e.id
+      LEFT JOIN ticket_categories tc ON b.category_id = tc.id
+      WHERE 1=1
+    `;
+    const params = [];
+
+    if (eventId) {
+      sql += ' AND b.event_id = ?';
+      params.push(Number(eventId));
+    }
+
+    if (search && search.trim()) {
+      sql += ' AND (b.name LIKE ? OR b.email LIKE ? OR b.mobile LIKE ? OR e.title LIKE ?)';
+      const s = `%${search.trim()}%`;
+      params.push(s, s, s, s);
+    }
+
+    sql += ' ORDER BY b.booking_date DESC LIMIT 200';
+
+    const [rows] = await pool.query(sql, params);
+    return rows;
   }
 };

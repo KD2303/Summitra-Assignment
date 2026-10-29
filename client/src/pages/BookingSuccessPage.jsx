@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/api';
 import { ConfettiEffect } from '../components/ConfettiEffect';
 import { QRTicket } from '../components/QRTicket';
-import { CheckCircle2, ArrowRight, Calendar, Sparkles } from 'lucide-react';
+import { CheckCircle2, Calendar } from 'lucide-react';
 
 export function BookingSuccessPage() {
   const { id } = useParams();
@@ -29,26 +29,26 @@ export function BookingSuccessPage() {
   }, []);
 
   return (
-    <main id="main-content" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <main id="main-content" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-8">
       {/* Confetti Explosion (Respects reduced motion) */}
       <ConfettiEffect />
 
       {/* Header section with accessible focus */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-feedback-success/20 border border-feedback-success text-feedback-success mb-2 shadow-[0_0_25px_rgba(16,185,129,0.3)]">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 mb-2 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
           <CheckCircle2 className="w-8 h-8" />
         </div>
 
         <h1
           ref={headingRef}
           tabIndex={-1}
-          className="text-3xl sm:text-5xl font-extrabold text-text-primary tracking-tight focus:outline-none"
+          className="text-[28px] sm:text-[38px] font-extrabold text-white tracking-tight focus:outline-none"
         >
-          Booking Confirmed!
+          Booking <span className="text-[#fdda7a]">Confirmed!</span>
         </h1>
 
-        <p className="text-sm sm:text-base text-text-tertiary max-w-md mx-auto">
-          Your admission has been permanently registered in the Summitra database. A copy of your pass is ready below.
+        <p className="text-[14px] sm:text-[15px] text-white/60 max-w-lg mx-auto leading-relaxed">
+          Your admission has been permanently registered in the Summitra database with row-level ACID locks. Your official digital pass is ready below.
         </p>
       </div>
 
@@ -56,23 +56,23 @@ export function BookingSuccessPage() {
       {booking ? (
         <QRTicket booking={booking} />
       ) : (
-        <div className="p-8 text-center bg-surface-card rounded-2xl animate-pulse">
-          <p className="text-text-tertiary">Loading ticket pass details...</p>
+        <div className="p-8 text-center bg-[#0d0d12] border border-white/10 rounded-[28px] animate-pulse">
+          <p className="text-white/50 text-[14px]">Loading ticket pass details...</p>
         </div>
       )}
 
       {/* Next Actions */}
-      <div className="pt-8 border-t border-surface-border text-center flex flex-col sm:flex-row items-center justify-center gap-4">
+      <div className="pt-6 border-t border-white/10 text-center flex flex-col sm:flex-row items-center justify-center gap-4">
         <Link
           to="/events"
-          className="px-6 py-3 rounded-xl bg-surface-card hover:bg-surface-subtle border border-surface-border text-text-primary text-sm font-bold transition-colors inline-flex items-center gap-2"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white hover:bg-[#fdda7a] text-black text-[14px] font-extrabold transition-all shadow-lg hover:scale-105 active:scale-95"
         >
-          <Calendar className="w-4 h-4 text-brand-light" />
-          Browse Other Events
+          <Calendar className="w-4 h-4 text-[#8617d0]" />
+          <span>Browse Other Summits</span>
         </Link>
         <Link
           to="/"
-          className="px-6 py-3 rounded-xl text-text-tertiary hover:text-text-primary text-sm font-semibold transition-colors"
+          className="px-6 py-3 rounded-full text-white/60 hover:text-white text-[14px] font-semibold transition-colors"
         >
           Return to Summitra Home
         </Link>

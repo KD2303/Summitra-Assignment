@@ -7,23 +7,38 @@ dotenv.config();
 let isConnectedToMySQL = false;
 let realPool = null;
 
-const poolConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_PORT) || 3306,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'password',
-  database: process.env.DB_NAME || 'event_booking',
-  waitForConnections: true,
-  connectionLimit: 25,
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 10000,
-  dateStrings: true,
-  timezone: '+00:00'
-};
+const poolConfig = process.env.DATABASE_URL
+  ? {
+      uri: process.env.DATABASE_URL,
+      waitForConnections: true,
+      connectionLimit: 15,
+      queueLimit: 0,
+      enableKeepAlive: true,
+      keepAliveInitialDelay: 10000,
+      dateStrings: true,
+      timezone: '+00:00',
+      ssl: (process.env.DB_SSL === 'true' || process.env.DATABASE_URL.includes('ssl')) ? { rejectUnauthorized: false } : undefined
+    }
+  : {
+      host: process.env.DB_HOST || 'localhost',
+      port: Number(process.env.DB_PORT) || 3306,
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || 'password',
+      database: process.env.DB_NAME || 'event_booking',
+      waitForConnections: true,
+      connectionLimit: 25,
+      queueLimit: 0,
+      enableKeepAlive: true,
+      keepAliveInitialDelay: 10000,
+      dateStrings: true,
+      timezone: '+00:00',
+      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined
+    };
 
 try {
-  realPool = mysql.createPool(poolConfig);
+  realPool = process.env.DATABASE_URL
+    ? mysql.createPool(process.env.DATABASE_URL)
+    : mysql.createPool(poolConfig);
 } catch (err) {
   console.warn('⚠️ Could not initialize MySQL pool:', err.message);
 }

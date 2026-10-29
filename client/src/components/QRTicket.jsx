@@ -102,43 +102,43 @@ export function QRTicket({ booking }) {
         </div>
 
         {/* Event Title */}
-        <h3 className="font-extrabold text-2xl text-text-primary tracking-tight mb-4">
+        <h3 className="font-extrabold text-[20px] sm:text-[24px] text-white tracking-tight mb-4">
           {booking.event_title || 'Summitra Event Pass'}
         </h3>
 
         {/* Event Details */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-[13px]">
           <div className="space-y-1">
-            <span className="text-xs text-text-tertiary flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-brand-light" />
+            <span className="text-[11px] text-white/50 flex items-center gap-1.5 font-bold uppercase tracking-wider">
+              <Calendar className="w-3.5 h-3.5 text-[#fdda7a]" />
               Date & Time
             </span>
-            <p className="font-bold text-text-primary">{formattedDate || 'Scheduled Event'}</p>
+            <p className="font-bold text-white">{formattedDate || 'Scheduled Event'}</p>
           </div>
 
           <div className="space-y-1">
-            <span className="text-xs text-text-tertiary flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-brand-light" />
+            <span className="text-[11px] text-white/50 flex items-center gap-1.5 font-bold uppercase tracking-wider">
+              <MapPin className="w-3.5 h-3.5 text-[#c084fc]" />
               Venue & Location
             </span>
-            <p className="font-bold text-text-primary truncate">{booking.event_location || 'Official Venue'}</p>
+            <p className="font-bold text-white truncate">{booking.event_location || 'Official Venue'}</p>
           </div>
 
           <div className="space-y-1">
-            <span className="text-xs text-text-tertiary">Attendee Name</span>
-            <p className="font-bold text-text-primary">{booking.name}</p>
+            <span className="text-[11px] text-white/50 font-bold uppercase tracking-wider block">Attendee Name</span>
+            <p className="font-bold text-white">{booking.name}</p>
           </div>
 
           <div className="space-y-1">
-            <span className="text-xs text-text-tertiary">Category & Quantity</span>
-            <p className="font-bold text-text-primary">
+            <span className="text-[11px] text-white/50 font-bold uppercase tracking-wider block">Tier & Quantity</span>
+            <p className="font-bold text-[#fdda7a]">
               {booking.category_name || 'Standard'} • {booking.quantity} Ticket{booking.quantity > 1 ? 's' : ''}
             </p>
           </div>
         </div>
 
         {/* Cutout notch effect */}
-        <div className="relative border-t-2 border-dashed border-surface-border my-6">
+        <div className="relative border-t-2 border-dashed border-white/10 my-6">
           <div className="absolute -left-12 -top-4 w-8 h-8 rounded-full bg-[#000000]" />
           <div className="absolute -right-12 -top-4 w-8 h-8 rounded-full bg-[#000000]" />
         </div>
@@ -146,13 +146,13 @@ export function QRTicket({ booking }) {
         {/* QR Code Section */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-2">
           <div className="text-center sm:text-left space-y-1">
-            <span className="text-xs uppercase tracking-wider text-text-tertiary font-bold block">
+            <span className="text-[11px] uppercase tracking-wider text-white/50 font-bold block">
               Scan at Entrance
             </span>
-            <p className="text-sm text-text-tertiary max-w-[240px]">
-              Present this encrypted QR ticket to admission staff at entry turnstiles.
+            <p className="text-[12px] text-white/60 max-w-[240px] leading-relaxed">
+              Present this verified QR ticket to admission staff at entry turnstiles.
             </p>
-            <p className="text-xs font-mono text-brand-light pt-2">
+            <p className="text-[11px] font-mono text-[#c084fc] pt-2">
               REF: {booking.idempotency_key ? booking.idempotency_key.slice(0, 16) : `TKT-${booking.id}`}
             </p>
           </div>
@@ -178,10 +178,10 @@ export function QRTicket({ booking }) {
           type="button"
           onClick={handleDownloadTicket}
           disabled={isExporting}
-          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-surface-raised hover:bg-surface-strong text-text-primary font-bold text-sm shadow-[0_4px_20px_rgba(134,23,208,0.4)] transition-all duration-fast transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:ring-2 focus-visible:ring-brand-light min-h-[44px]"
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-[#fdda7a] text-black font-extrabold text-[14px] shadow-[0_8px_30px_rgba(253,218,122,0.25)] transition-all hover:scale-105 active:scale-95 cursor-pointer"
         >
-          <Download className="w-4 h-4" />
-          {isExporting ? 'Generating PNG...' : 'Download Ticket (PNG)'}
+          <Download className="w-4 h-4 text-[#8617d0]" />
+          <span>{isExporting ? 'Generating PNG...' : 'Download Pass (PNG)'}</span>
         </button>
       </div>
     </div>

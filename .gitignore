@@ -1,34 +1,108 @@
-# Dependencies
+# =============================================================================
+# Summitra — Production Git Ignore Configuration
+# =============================================================================
+
+# --- Dependencies & Package Managers ---
 node_modules/
-.pnp
+**/node_modules/
+.pnp/
 .pnp.js
+.yarn/
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
-# Production builds
-client/dist
-client/build
-server/dist
+# --- Build Outputs & Bundles ---
+dist/
+**/dist/
+build/
+**/build/
+.output/
+out/
+.next/
+client/dist/
+server/dist/
 
-# Environment variables
+# --- Vite & Cache Directories ---
+.vite/
+**/.vite/
+.cache/
+**/.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+.turbo/
+
+# --- Environment & Secret Configuration ---
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+!.env.template
 server/.env
+server/.env.*
+!server/.env.example
 client/.env
+client/.env.*
+!client/.env.example
 
-# Logs
+# --- Logs & Runtime State ---
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-*.log
+lerna-debug.log*
+.pnpm-debug.log*
 
-# OS & Editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# MySQL data volume
+# --- Database Storage & Docker Volumes ---
 mysql_data/
+**/mysql_data/
+mariadb_data/
+**/mariadb_data/
+docker_data/
+*.sqlite
+*.sqlite3
+*.db
+
+# --- Test Coverage & Reports ---
+coverage/
+**/coverage/
+.nyc_output/
+cypress/videos/
+cypress/screenshots/
+playwright-report/
+test-results/
+
+# --- OS System Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- IDEs & Code Editors ---
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# --- Temporary Files & Artifacts ---
+tmp/
+temp/
+*.tmp
+*.temp
+.tempmediaStorage/
+scratch/

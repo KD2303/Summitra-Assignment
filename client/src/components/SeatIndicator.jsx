@@ -1,46 +1,48 @@
 import React from 'react';
-import { Users, AlertTriangle, XCircle, CheckCircle } from 'lucide-react';
+import { Users, AlertTriangle, XCircle, CheckCircle, Radio } from 'lucide-react';
 
 /**
  * SeatIndicator
- * Accessible seat availability component.
- * Adheres to rule: Never convey seat status by color alone.
- * Uses icons + explicit textual labels + aria-live announcements.
+ * Accessible real-time seat availability component with live pulse and WCAG compliance.
  */
 export function SeatIndicator({ availableSeats, totalSeats = 100, isLive = true }) {
   const seats = Math.max(0, Number(availableSeats) || 0);
   const total = Number(totalSeats) || 100;
   const ratio = seats / total;
 
-  let badgeColor = 'bg-feedback-success/15 border-feedback-success/30 text-emerald-300';
+  let badgeStyle = 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400';
   let Icon = CheckCircle;
-  let label = `${seats} seats left`;
+  let label = `${seats} seats remaining`;
+  let pulseColor = 'bg-emerald-400';
 
   if (seats === 0) {
-    badgeColor = 'bg-surface-card border-surface-border text-text-tertiary';
+    badgeStyle = 'bg-zinc-800/80 border-zinc-700/80 text-zinc-400';
     Icon = XCircle;
     label = 'Sold out';
+    pulseColor = '';
   } else if (ratio <= 0.2 || seats <= 10) {
-    badgeColor = 'bg-feedback-error/20 border-feedback-error/40 text-red-300';
+    badgeStyle = 'bg-rose-500/15 border-rose-500/35 text-rose-300';
     Icon = AlertTriangle;
-    label = `Only ${seats} left`;
+    label = `Only ${seats} seats left`;
+    pulseColor = 'bg-rose-400';
   }
 
   return (
     <div
       role="status"
       aria-live="polite"
-      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-sm transition-all duration-fast ${badgeColor}`}
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-bold border backdrop-blur-md shadow-sm transition-all duration-300 ${badgeStyle}`}
     >
-      <Icon className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
-      <span>{label}</span>
+      {/* Live beacon indicator */}
       {isLive && seats > 0 && (
-        <span
-          className="w-1.5 h-1.5 rounded-full bg-feedback-success animate-ping"
-          title="Real-time live updates"
-          aria-hidden="true"
-        />
+        <span className="relative flex h-2 w-2 flex-shrink-0" aria-hidden="true">
+          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${pulseColor}`} />
+          <span className={`relative inline-flex rounded-full h-2 w-2 ${pulseColor}`} />
+        </span>
       )}
+
+      <Icon className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
+      <span className="tracking-tight">{label}</span>
     </div>
   );
 }

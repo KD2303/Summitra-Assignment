@@ -20,6 +20,7 @@ export const authController = {
       );
 
       if (!admins || admins.length === 0) {
+        console.warn(`[SECURITY AUDIT] Failed login attempt for unknown user: ${email} from IP: ${req.ip}`);
         throw new AppError('UNAUTHENTICATED', 'Invalid email or password', 401);
       }
 
@@ -27,14 +28,17 @@ export const authController = {
       const match = await bcrypt.compare(password, admin.password_hash);
 
       if (!match) {
+        console.warn(`[SECURITY AUDIT] Failed password attempt for: ${admin.email} from IP: ${req.ip}`);
         throw new AppError('UNAUTHENTICATED', 'Invalid email or password', 401);
       }
+
+      console.log(`[SECURITY AUDIT] Successful admin authentication: ${admin.email} from IP: ${req.ip}`);
 
       // Generate JWT
       const token = jwt.sign(
         { id: admin.id, email: admin.email, role: 'admin' },
         JWT_SECRET,
-        { expiresIn: '24h' }
+        { expiresIn: '8h' }
       );
 
       // Set httpOnly cookie
@@ -42,7 +46,7 @@ export const authController = {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 24 * 60 * 60 * 1000
+        maxAge: 8 * 60 * 60 * 1000
       });
 
       res.status(200).json({
@@ -62,6 +66,7 @@ export const authController = {
    * Admin Logout
    */
   async logout(req, res) {
+    console.log(`[SECURITY AUDIT] Admin session terminated: ${req.admin?.email || 'Unknown'} from IP: ${req.ip}`);
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

@@ -1,4 +1,7 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const rawApiUrl = (import.meta.env.VITE_API_URL || '').trim();
+const API_BASE = rawApiUrl
+  ? (rawApiUrl.endsWith('/api') ? rawApiUrl.replace(/\/+$/, '') : `${rawApiUrl.replace(/\/+$/, '')}/api`)
+  : '/api';
 
 /**
  * Custom API Error class with error code and details
@@ -92,6 +95,14 @@ export const api = {
   getBookingById: (id, email = '') => {
     const qs = email ? `?email=${encodeURIComponent(email)}` : '';
     return request(`/bookings/${id}${qs}`);
+  },
+
+  getAllBookings: (params = {}) => {
+    const searchParams = new URLSearchParams();
+    if (params.eventId) searchParams.set('eventId', params.eventId);
+    if (params.search) searchParams.set('search', params.search);
+    const qs = searchParams.toString();
+    return request(`/bookings${qs ? `?${qs}` : ''}`);
   },
 
   // Auth
