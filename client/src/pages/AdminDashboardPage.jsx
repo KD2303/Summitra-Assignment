@@ -47,8 +47,8 @@ export function AdminDashboardPage() {
   const [attendeeSearch, setAttendeeSearch] = useState('');
   const [selectedEventFilter, setSelectedEventFilter] = useState('');
 
-  // Privacy Shield state (masks attendee PII by default for security)
-  const [maskPii, setMaskPii] = useState(true);
+  // Privacy Shield state (unmasked by default so admin can see full attendee info)
+  const [maskPii, setMaskPii] = useState(false);
 
   // Modals state
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
@@ -839,14 +839,15 @@ export function AdminDashboardPage() {
                     <thead className="bg-[#141419] border-b border-white/10 text-[11px] uppercase text-white/50 font-bold tracking-wider">
                       <tr>
                         <th scope="col" className="p-4">Pass ID</th>
-                        <th scope="col" className="p-4">Attendee</th>
-                        <th scope="col" className="p-4">Contact (PII Masked)</th>
+                        <th scope="col" className="p-4">Attendee Name</th>
+                        <th scope="col" className="p-4">Contact Details</th>
                         <th scope="col" className="p-4">Summit</th>
                         <th scope="col" className="p-4">Tier Pass</th>
                         <th scope="col" className="p-4">Qty</th>
                         <th scope="col" className="p-4">Total</th>
-                        <th scope="col" className="p-4">Date</th>
+                        <th scope="col" className="p-4">Booking Date</th>
                         <th scope="col" className="p-4">Status</th>
+                        <th scope="col" className="p-4 text-right">Pass Details</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5">
@@ -857,15 +858,15 @@ export function AdminDashboardPage() {
                           </td>
                           <td className="p-4 font-bold text-white whitespace-nowrap">
                             <div className="flex items-center gap-2.5">
-                              <div className="w-7 h-7 rounded-full bg-[#8617d0]/20 border border-[#8617d0]/40 flex items-center justify-center text-[11px] font-black text-[#fdda7a] flex-shrink-0">
+                              <div className="w-8 h-8 rounded-full bg-[#8617d0]/20 border border-[#8617d0]/40 flex items-center justify-center text-[12px] font-black text-[#fdda7a] flex-shrink-0">
                                 {b.name ? b.name[0] : 'U'}
                               </div>
-                              <span>{maskName(b.name)}</span>
+                              <span className="text-[14px]">{maskName(b.name)}</span>
                             </div>
                           </td>
-                          <td className="p-4 text-[12px] text-white/70">
-                            <div>{maskEmail(b.email)}</div>
-                            <div className="text-[11px] text-white/40">{maskPhone(b.mobile)}</div>
+                          <td className="p-4 text-[12px] text-white/80">
+                            <div className="font-medium text-white">{maskEmail(b.email)}</div>
+                            <div className="text-[11px] text-white/50">{maskPhone(b.mobile)}</div>
                           </td>
                           <td className="p-4 font-medium text-white max-w-xs truncate">
                             {b.event_title || 'Summit Event'}
@@ -878,13 +879,24 @@ export function AdminDashboardPage() {
                             ${parseFloat(b.total_amount).toFixed(2)}
                           </td>
                           <td className="p-4 font-mono text-[11px] text-white/50 whitespace-nowrap">
-                            {new Date(b.booking_date).toLocaleDateString()}
+                            {new Date(b.booking_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                           </td>
                           <td className="p-4">
                             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                               <ShieldCheck className="w-3 h-3" />
                               Confirmed
                             </span>
+                          </td>
+                          <td className="p-4 text-right whitespace-nowrap">
+                            <button
+                              type="button"
+                              onClick={() => setViewingPass(b)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#8617d0]/20 hover:bg-[#8617d0] text-[#c084fc] hover:text-white border border-[#8617d0]/40 text-[11px] font-bold transition-all cursor-pointer shadow-sm"
+                              title="Inspect Attendee Ticket Details"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>View Details</span>
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -1128,6 +1140,123 @@ export function AdminDashboardPage() {
                 className="px-6 py-2.5 rounded-full bg-rose-600 hover:bg-rose-500 disabled:opacity-30 disabled:cursor-not-allowed text-white font-extrabold text-[13px] transition-all cursor-pointer"
               >
                 Permanently Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* Attendee Booking Details Modal */}
+      {/* ========================================================================= */}
+      {viewingPass && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+        >
+          <div className="w-full max-w-lg rounded-[28px] border border-white/15 bg-[#0f0f14] p-6 space-y-6 shadow-2xl relative">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between border-b border-white/10 pb-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-mono text-[12px] font-extrabold text-[#c084fc] bg-[#8617d0]/20 border border-[#8617d0]/40 px-2.5 py-0.5 rounded-full">
+                    Pass #{viewingPass.id}
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                    <ShieldCheck className="w-3 h-3" />
+                    Confirmed Pass
+                  </span>
+                </div>
+                <h3 className="text-[20px] font-bold text-white tracking-tight">
+                  Attendee Registration Details
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setViewingPass(null)}
+                className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Attendee Info Card */}
+            <div className="p-4 rounded-[20px] bg-white/[0.03] border border-white/10 space-y-3">
+              <span className="text-[11px] font-bold text-[#fdda7a] uppercase tracking-wider block">
+                Attendee Contact Information
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[13px]">
+                <div>
+                  <span className="text-[11px] text-white/40 block">Full Name</span>
+                  <span className="font-bold text-white text-[15px]">{viewingPass.name}</span>
+                </div>
+                <div>
+                  <span className="text-[11px] text-white/40 block">Email Address</span>
+                  <span className="font-semibold text-white/90 break-all">{viewingPass.email}</span>
+                </div>
+                <div>
+                  <span className="text-[11px] text-white/40 block">Mobile Phone</span>
+                  <span className="font-semibold text-white/90">{viewingPass.mobile || 'Not provided'}</span>
+                </div>
+                <div>
+                  <span className="text-[11px] text-white/40 block">Booked On</span>
+                  <span className="font-mono text-white/70 text-[12px]">
+                    {new Date(viewingPass.booking_date).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Summit & Pass Details */}
+            <div className="p-4 rounded-[20px] bg-[#8617d0]/10 border border-[#8617d0]/30 space-y-3">
+              <span className="text-[11px] font-bold text-[#c084fc] uppercase tracking-wider block">
+                Conference & Pass Reservation
+              </span>
+              <div className="space-y-1.5">
+                <div className="font-bold text-white text-[16px]">
+                  {viewingPass.event_title}
+                </div>
+                {viewingPass.event_location && (
+                  <div className="text-[12px] text-white/60 flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#fdda7a] flex-shrink-0" />
+                    <span>{viewingPass.event_location}</span>
+                  </div>
+                )}
+                {viewingPass.event_date && (
+                  <div className="text-[12px] text-white/60 flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-[#9e6ce8] flex-shrink-0" />
+                    <span>{new Date(viewingPass.event_date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[13px]">
+                <div>
+                  <span className="text-[11px] text-white/40 block">Tier Category</span>
+                  <span className="font-bold text-[#fdda7a]">{viewingPass.category_name || 'Standard Pass'}</span>
+                </div>
+                <div>
+                  <span className="text-[11px] text-white/40 block">Seats Reserved</span>
+                  <span className="font-bold text-white text-center block">{viewingPass.quantity} Ticket(s)</span>
+                </div>
+                <div>
+                  <span className="text-[11px] text-white/40 block">Total Amount</span>
+                  <span className="font-black text-emerald-400 text-[16px]">
+                    ${parseFloat(viewingPass.total_amount).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Close Button */}
+            <div className="flex justify-end pt-1">
+              <button
+                type="button"
+                onClick={() => setViewingPass(null)}
+                className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-[13px] transition-colors cursor-pointer"
+              >
+                Close Pass Details
               </button>
             </div>
           </div>

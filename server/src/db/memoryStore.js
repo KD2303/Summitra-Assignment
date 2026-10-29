@@ -118,6 +118,74 @@ class MemoryDatabase {
       { id: 11, event_id: 5, name: 'VIP All-Access', price: 299.00, seat_limit: 50 },
       { id: 12, event_id: 6, name: 'Full Congress Pass', price: 279.00, seat_limit: 300 }
     ];
+
+    this.bookings = [
+      {
+        id: 101,
+        event_id: 1,
+        category_id: 3,
+        name: 'Aarav Patel',
+        email: 'aarav.patel@techindia.org',
+        mobile: '+91 98765 43210',
+        quantity: 2,
+        total_amount: 1198.00,
+        booking_date: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
+        status: 'confirmed',
+        idempotency_key: 'seed_idem_101'
+      },
+      {
+        id: 102,
+        event_id: 2,
+        category_id: 6,
+        name: 'Priya Sundaram',
+        email: 'priya.sundaram@designcraft.co',
+        mobile: '+91 98451 23456',
+        quantity: 1,
+        total_amount: 349.00,
+        booking_date: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+        status: 'confirmed',
+        idempotency_key: 'seed_idem_102'
+      },
+      {
+        id: 103,
+        event_id: 3,
+        category_id: 7,
+        name: 'Rohan Mehta',
+        email: 'rohan.mehta@cloudnative.in',
+        mobile: '+91 91234 56789',
+        quantity: 3,
+        total_amount: 747.00,
+        booking_date: new Date(Date.now() - 1000 * 60 * 240).toISOString(),
+        status: 'confirmed',
+        idempotency_key: 'seed_idem_103'
+      },
+      {
+        id: 104,
+        event_id: 4,
+        category_id: 9,
+        name: 'Ananya Iyer',
+        email: 'ananya.iyer@venturepulse.vc',
+        mobile: '+91 99887 76655',
+        quantity: 2,
+        total_amount: 998.00,
+        booking_date: new Date(Date.now() - 1000 * 60 * 360).toISOString(),
+        status: 'confirmed',
+        idempotency_key: 'seed_idem_104'
+      },
+      {
+        id: 105,
+        event_id: 5,
+        category_id: 11,
+        name: 'Vikram Malhotra',
+        email: 'vikram.m@fullstacklabs.dev',
+        mobile: '+91 98111 22334',
+        quantity: 1,
+        total_amount: 299.00,
+        booking_date: new Date(Date.now() - 1000 * 60 * 600).toISOString(),
+        status: 'confirmed',
+        idempotency_key: 'seed_idem_105'
+      }
+    ];
   }
 
   // Mutex lock for atomic transactions

@@ -177,6 +177,46 @@ function runMemoryQuery(sql, params = []) {
     return [rows, []];
   }
 
+  // 9b. SELECT all bookings with events and categories (Admin User Management)
+  if (/SELECT .* FROM bookings b JOIN events e/i.test(cleanSql)) {
+    let rows = [...memoryDb.bookings];
+    let pIdx = 0;
+
+    if (cleanSql.includes('b.event_id = ?')) {
+      const evtId = Number(params[pIdx++]);
+      rows = rows.filter(b => b.event_id === evtId);
+    }
+
+    if (cleanSql.includes('(b.name LIKE ? OR b.email LIKE ? OR b.mobile LIKE ? OR e.title LIKE ?)')) {
+      const s = (params[pIdx++] || '').replace(/%/g, '').toLowerCase();
+      pIdx += 3;
+      rows = rows.filter(b => {
+        const ev = memoryDb.events.find(x => x.id === b.event_id);
+        return (
+          b.name?.toLowerCase().includes(s) ||
+          b.email?.toLowerCase().includes(s) ||
+          b.mobile?.toLowerCase().includes(s) ||
+          ev?.title?.toLowerCase().includes(s)
+        );
+      });
+    }
+
+    const mapped = rows.map(b => {
+      const ev = memoryDb.events.find(x => x.id === b.event_id);
+      const cat = memoryDb.ticket_categories.find(x => x.id === b.category_id);
+      return {
+        ...b,
+        event_title: ev?.title || 'Summit Event',
+        event_location: ev?.location || 'India',
+        event_date: ev?.date || b.booking_date,
+        category_name: cat?.name || 'Standard Pass'
+      };
+    });
+
+    mapped.sort((a, b) => new Date(b.booking_date).getTime() - new Date(a.booking_date).getTime());
+    return [mapped, []];
+  }
+
   // 10. INSERT INTO events
   if (/INSERT INTO events/i.test(cleanSql)) {
     const colMatch = cleanSql.match(/INSERT INTO events\s*\(([^)]+)\)/i);
