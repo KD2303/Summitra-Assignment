@@ -43,12 +43,22 @@ const corsOptions = {
       callback(null, true);
     } else {
       console.warn(`[CORS] Blocked request from origin: ${origin}`);
-      callback(new Error(`Not allowed by CORS: ${origin}`));
+      callback(null, false);
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Idempotency-Key',
+    'idempotency-key',
+    'Accept',
+    'Origin'
+  ],
+  exposedHeaders: ['Idempotency-Key'],
+  optionsSuccessStatus: 200
 };
 
 // Configure Socket.IO
@@ -66,11 +76,12 @@ const io = new SocketIOServer(server, {
 app.set('io', io);
 setupSocketIO(io);
 
-// Security & Parsing Middleware
+// Security & Parsing Middleware (CORS MUST run first to handle OPTIONS preflight cleanly)
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
-app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
