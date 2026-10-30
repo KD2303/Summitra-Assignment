@@ -213,7 +213,7 @@ export function LandingPage() {
           </h2>
 
           {/* Large Editorial Statement */}
-          <div className="text-xl sm:text-3xl md:text-4xl lg:text-[46px] xl:text-[48px] font-medium leading-[1.35] sm:leading-[1.28] tracking-[-0.02em] sm:tracking-[-0.03em]">
+          <div className="text-m sm:text-1xl md:text-4xl lg:text-[46px] xl:text-[48px] font-medium leading-[1.35] sm:leading-[1.28] tracking-[-0.02em] sm:tracking-[-0.03em]">
             <span className="text-white">
               Summitra 2025 is an immersive, IT Conference over the course of
               three days,{' '}
@@ -230,7 +230,7 @@ export function LandingPage() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8 mt-10 sm:mt-16 lg:mt-20">
             {/* 4 Dark Aspect-Ratio Countdown Boxes — 2×2 on mobile, 4-in-a-row on sm+ */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-3.5 w-full sm:w-auto">
-              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-xl flex flex-col items-center justify-center p-2">
+              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-l flex flex-col items-center justify-center p-2">
                 <div className="text-3xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.days).padStart(2, '0')}
                 </div>
@@ -239,7 +239,7 @@ export function LandingPage() {
                 </div>
               </div>
 
-              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-xl flex flex-col items-center justify-center p-2">
+              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-l flex flex-col items-center justify-center p-2">
                 <div className="text-3xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.hours).padStart(2, '0')}
                 </div>
@@ -248,7 +248,7 @@ export function LandingPage() {
                 </div>
               </div>
 
-              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-xl flex flex-col items-center justify-center p-2">
+              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-l flex flex-col items-center justify-center p-2">
                 <div className="text-3xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.minutes).padStart(2, '0')}
                 </div>
@@ -257,7 +257,7 @@ export function LandingPage() {
                 </div>
               </div>
 
-              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-xl flex flex-col items-center justify-center p-2">
+              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-l flex flex-col items-center justify-center p-2">
                 <div className="text-3xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.seconds).padStart(2, '0')}
                 </div>
