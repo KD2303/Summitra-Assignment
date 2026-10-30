@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { useQuery } from '@tanstack/react-query';
-import { api } from '../lib/api';
-import { EventCard } from '../components/EventCard';
 import {
   ArrowRight,
   MapPin,
@@ -14,18 +11,11 @@ import {
   QrCode,
   CheckCircle2,
   Sparkles,
-  Flame,
-  Calendar
+  Calendar,
+  Plus
 } from 'lucide-react';
 
 export function LandingPage() {
-  const { data, isLoading } = useQuery({
-    queryKey: ['featured-events'],
-    queryFn: () => api.getEvents({ limit: 3 })
-  });
-
-  const featuredEvents = data?.events || [];
-
   // Smooth scroll interpolation: side cards start 85px lower, glide up to 0px on scroll
   const { scrollY } = useScroll();
   const rawSideY = useTransform(scrollY, [0, 260], [85, 0]);
@@ -91,7 +81,7 @@ export function LandingPage() {
   ];
 
   return (
-    <main id="main-content" className="overflow-hidden bg-black text-white">
+    <main id="main-content" className="overflow-x-clip bg-black text-white">
       {/* ============================================================== */}
       {/* 1. HERO SECTION (Webflow Summitra Purple Wave Style) */}
       {/* ============================================================== */}
@@ -152,7 +142,7 @@ export function LandingPage() {
               <div className="flex items-center gap-3 text-left">
                 <div className="w-14 h-14 rounded-full bg-white/10 p-2 flex items-center justify-center flex-shrink-0">
                   <div className="w-full h-full rounded-full bg-[#fdda7a] flex items-center justify-center">
-                    <MapPin className="w-4 h-4 text-black fill-black" />
+                    <MapPin className="w-4 h-4 text-black" />
                   </div>
                 </div>
                 <span className="text-white text-sm sm:text-base font-normal">
@@ -205,15 +195,25 @@ export function LandingPage() {
       {/* ============================================================== */}
       {/* 3. ABOUT SECTION WITH COUNTDOWN (Exact Webflow Proportions) */}
       {/* ============================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-24">
-        <div className="max-w-[1160px] mx-auto">
+      <section className="relative bg-black max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 lg:pt-40 pb-20 sm:pb-28 overflow-hidden">
+        {/* Background Decorative Ellipse */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <img
+            src="https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6880a791735d2e2ce92c8243_Ellipse%204.svg"
+            alt=""
+            loading="lazy"
+            className="absolute top-0 right-0 max-w-lg opacity-40 pointer-events-none"
+          />
+        </div>
+
+        <div className="relative max-w-[1160px] mx-auto z-10">
           {/* Section Title */}
-          <h2 className="text-5xl sm:text-6xl lg:text-[72px] font-semibold text-white tracking-tight leading-[1.17] capitalize">
+          <h2 className="text-6xl sm:text-7xl lg:text-[90px] xl:text-[96px] font-medium text-white tracking-[-0.02em] leading-none mb-10 sm:mb-14 lg:mb-16">
             About
           </h2>
 
           {/* Large Editorial Statement */}
-          <div className="mt-8 sm:mt-12 text-2xl sm:text-3xl md:text-4xl lg:text-[48px] font-medium leading-[1.29] tracking-[-0.03em]">
+          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] xl:text-[48px] font-medium leading-[1.28] tracking-[-0.03em]">
             <span className="text-white">
               Summitra 2025 is an immersive, IT Conference over the course of
               three days,{' '}
@@ -227,51 +227,51 @@ export function LandingPage() {
           </div>
 
           {/* Countdown Timer on Left & Buy Ticket on Right (Aligned to Bottom) */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8 mt-12 sm:mt-14">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8 mt-14 sm:mt-16 lg:mt-20">
             {/* 4 Dark Aspect-Ratio Countdown Boxes */}
-            <div className="flex flex-wrap sm:flex-nowrap gap-3 sm:gap-3.5">
-              <div className="w-20 h-20 sm:w-[126px] sm:h-[126px] aspect-square bg-[#111111] rounded-lg flex flex-col items-center justify-center">
-                <div className="text-2xl sm:text-[40px] font-bold text-white leading-tight">
+            <div className="grid grid-cols-4 gap-2.5 sm:gap-3.5">
+              <div className="w-[74px] h-[74px] sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-[10px] sm:rounded-xl flex flex-col items-center justify-center p-2">
+                <div className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.days).padStart(2, '0')}
                 </div>
-                <div className="text-xs sm:text-base text-[#a3a3a3] font-normal mt-0.5">
+                <div className="text-[11px] sm:text-[15px] text-[#a3a3a3] font-normal mt-1 sm:mt-2">
                   Days
                 </div>
               </div>
 
-              <div className="w-20 h-20 sm:w-[126px] sm:h-[126px] aspect-square bg-[#111111] rounded-lg flex flex-col items-center justify-center">
-                <div className="text-2xl sm:text-[40px] font-bold text-white leading-tight">
+              <div className="w-[74px] h-[74px] sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-[10px] sm:rounded-xl flex flex-col items-center justify-center p-2">
+                <div className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.hours).padStart(2, '0')}
                 </div>
-                <div className="text-xs sm:text-base text-[#a3a3a3] font-normal mt-0.5">
+                <div className="text-[11px] sm:text-[15px] text-[#a3a3a3] font-normal mt-1 sm:mt-2">
                   Hours
                 </div>
               </div>
 
-              <div className="w-20 h-20 sm:w-[126px] sm:h-[126px] aspect-square bg-[#111111] rounded-lg flex flex-col items-center justify-center">
-                <div className="text-2xl sm:text-[40px] font-bold text-white leading-tight">
+              <div className="w-[74px] h-[74px] sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-[10px] sm:rounded-xl flex flex-col items-center justify-center p-2">
+                <div className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.minutes).padStart(2, '0')}
                 </div>
-                <div className="text-xs sm:text-base text-[#a3a3a3] font-normal mt-0.5">
+                <div className="text-[11px] sm:text-[15px] text-[#a3a3a3] font-normal mt-1 sm:mt-2">
                   Minutes
                 </div>
               </div>
 
-              <div className="w-20 h-20 sm:w-[126px] sm:h-[126px] aspect-square bg-[#111111] rounded-lg flex flex-col items-center justify-center">
-                <div className="text-2xl sm:text-[40px] font-bold text-white leading-tight">
+              <div className="w-[74px] h-[74px] sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-[10px] sm:rounded-xl flex flex-col items-center justify-center p-2">
+                <div className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.seconds).padStart(2, '0')}
                 </div>
-                <div className="text-xs sm:text-base text-[#a3a3a3] font-normal mt-0.5">
+                <div className="text-[11px] sm:text-[15px] text-[#a3a3a3] font-normal mt-1 sm:mt-2">
                   Seconds
                 </div>
               </div>
             </div>
 
-            {/* Buy Ticket Pill Button - Positioned to the far right aligned to bottom */}
+            {/* Buy Ticket Pill Button */}
             <div className="self-end sm:self-auto">
               <Link
                 to="/events"
-                className="h-14 pl-7 pr-2.5 rounded-full bg-white text-[#040404] font-bold text-base hover:bg-zinc-100 transition-all duration-200 inline-flex items-center gap-3 shadow-xl group"
+                className="inline-flex items-center gap-3.5 pl-7 pr-2.5 py-3 rounded-full bg-white text-black font-semibold text-base hover:bg-zinc-100 transition-all duration-200 shadow-xl group"
               >
                 <span>Buy Ticket</span>
                 <span className="w-9 h-9 rounded-full bg-[#8617d0] text-white flex items-center justify-center group-hover:scale-105 group-hover:translate-x-0.5 transition-transform duration-200">
@@ -299,149 +299,25 @@ export function LandingPage() {
       <BrandPartnersSection />
 
       {/* ============================================================== */}
-      {/* 4. FEATURED EVENTS & LIVE TICKETS (Smart Booking System) */}
+      {/* 3.4 RESOURCES FROM PAST CONFERENCES SECTION */}
       {/* ============================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-zinc-900">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 text-xs uppercase font-extrabold tracking-widest text-[#c084fc] mb-2">
-              <Flame className="w-4 h-4 text-[#c084fc]" />
-              <span>Real-Time Seat Feed</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Featured Tech Summits
-            </h2>
-          </div>
-
-          <Link
-            to="/events"
-            className="inline-flex items-center gap-2 text-sm font-bold text-[#c084fc] hover:text-white transition-colors underline-offset-4 hover:underline"
-          >
-            <span>View all upcoming events</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {/* Live Event Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {isLoading
-            ? Array.from({ length: 3 }).map((_, i) => (
-                <EventCard key={i} loading={true} />
-              ))
-            : featuredEvents.map((evt) => (
-                <EventCard key={evt.id} event={evt} />
-              ))}
-        </div>
-      </section>
+      <ResourcesFromPastConferencesSection />
 
       {/* ============================================================== */}
-      {/* 5. ARCHITECTURAL PILLARS (Anti-Oversell Guarantee) */}
+      {/* 3.5 ORGANIZE YOUR SCHEDULE SECTION */}
       {/* ============================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-zinc-900">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <span className="text-xs uppercase font-extrabold tracking-widest text-[#c084fc] block">
-            Engineered For Scale
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Built on Mission-Critical Architecture
-          </h2>
-          <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
-            Standard booking sites crumble during ticket drop spikes. Summitra
-            solves overselling and race conditions at the database transaction layer.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-8 rounded-3xl border border-zinc-800 bg-[#0c0c10] hover:border-[#8617d0]/60 transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#8617d0]/20 border border-[#8617d0]/40 flex items-center justify-center text-[#c084fc]">
-                <Lock className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-white">
-                Row-Lock Concurrency Protection
-              </h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                Every booking runs inside an atomic SQL transaction with{' '}
-                <code className="text-[#c084fc]">SELECT ... FOR UPDATE</code>.
-                Parallel checkout requests queue deterministically so seats never
-                drop below zero.
-              </p>
-            </div>
-            <div className="pt-6 mt-6 border-t border-zinc-800 text-xs text-[#c084fc] font-semibold flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              Verified by Concurrency Stress Test
-            </div>
-          </div>
-
-          <div className="p-8 rounded-3xl border border-zinc-800 bg-[#0c0c10] hover:border-[#8617d0]/60 transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#8617d0]/20 border border-[#8617d0]/40 flex items-center justify-center text-[#c084fc]">
-                <Zap className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-white">
-                Sub-Second Socket.IO Sync
-              </h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                Room-based WebSocket architecture emits immediate seat count deltas
-                upon transaction commit. All open browsers update live without
-                requiring manual page refresh.
-              </p>
-            </div>
-            <div className="pt-6 mt-6 border-t border-zinc-800 text-xs text-[#c084fc] font-semibold flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              Auto-reconnect with fresh state
-            </div>
-          </div>
-
-          <div className="p-8 rounded-3xl border border-zinc-800 bg-[#0c0c10] hover:border-[#8617d0]/60 transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#8617d0]/20 border border-[#8617d0]/40 flex items-center justify-center text-[#c084fc]">
-                <QrCode className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-white">
-                Instant QR Verification & PNG Export
-              </h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                Attendee tickets generate instant cryptographically verifiable QR
-                codes directly on the client. Attendees can download high-resolution
-                PNG passes for offline entry.
-              </p>
-            </div>
-            <div className="pt-6 mt-6 border-t border-zinc-800 text-xs text-[#c084fc] font-semibold flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              Accessible text equivalent included
-            </div>
-          </div>
-        </div>
-      </section>
+      <ScheduleSection />
 
       {/* ============================================================== */}
-      {/* 6. CALL TO ACTION BANNER */}
+      {/* 3.6 PRICING FOR TICKETS SECTION */}
       {/* ============================================================== */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="relative rounded-3xl border border-[#8617d0]/40 bg-gradient-to-r from-[#8617d0]/25 via-black to-[#8617d0]/25 p-10 sm:p-16 text-center overflow-hidden">
-          <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-              Ready to Secure Your Pass?
-            </h2>
-            <p className="text-sm sm:text-base text-zinc-400">
-              Browse world-class technical summits, view interactive venue
-              locations, and checkout with zero overselling guarantee.
-            </p>
-            <div className="pt-2">
-              <Link
-                to="/events"
-                className="inline-flex items-center gap-3 pl-7 pr-2.5 py-3 rounded-full bg-white text-black font-extrabold text-base hover:bg-zinc-100 transition-all duration-200 group shadow-xl"
-              >
-                <span>Browse All Events</span>
-                <span className="w-10 h-10 rounded-full bg-[#8617d0] text-white flex items-center justify-center group-hover:scale-105 group-hover:translate-x-0.5 transition-transform duration-200">
-                  <ArrowRight className="w-4 h-4" />
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PricingSection />
+
+      {/* ============================================================== */}
+      {/* 3.7 FREQUENTLY ASKED QUESTIONS SECTION */}
+      {/* ============================================================== */}
+      <FAQSection />
+
     </main>
   );
 }
@@ -557,15 +433,19 @@ function MeetTopITMindsSection() {
         <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden">
           <svg
             className="w-full h-full object-cover"
-            viewBox="0 0 2355 1004"
+            viewBox="0 0 1535 1061"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
+              d="M1707.93 -152.316C1764.23 29.1878 1738.08 408.094 1183.13 471.69C628.175 535.286 660.095 923.773 680.661 1113.39C696.051 1255.29 615.025 1665.71 4.8731 1591.9"
+              stroke="white"
+              strokeWidth="60"
+            />
+            <path
               d="M36.7591 997.712C66.2494 809.982 256.767 481.414 782.914 668.989C1309.06 856.564 1451.68 493.796 1516.82 314.529C1565.56 180.385 1819.23 -152.277 2334.34 182.969"
               stroke="white"
-              strokeOpacity="0.1"
-              strokeWidth="74"
+              strokeWidth="60"
             />
           </svg>
         </div>
@@ -792,6 +672,642 @@ function BrandPartnersSection() {
             logos={diamondLogos}
             progress={smoothProgress}
           />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const pastConferenceResources = [
+  {
+    id: 1,
+    img: 'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c89f33b882801c6cd6fb_resources-1.jpg',
+    srcSet:
+      'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c89f33b882801c6cd6fb_resources-1-p-500.jpg 500w, https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c89f33b882801c6cd6fb_resources-1-p-800.jpg 800w, https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c89f33b882801c6cd6fb_resources-1.jpg 847w',
+    alt: 'Keynote auditorium audience and presentation screen',
+    caption: 'Main Stage & Keynote Presentations'
+  },
+  {
+    id: 2,
+    img: 'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c8b13d6e0ca2baa840f9_resources-2.jpg',
+    srcSet:
+      'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c8b13d6e0ca2baa840f9_resources-2-p-500.jpg 500w, https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c8b13d6e0ca2baa840f9_resources-2-p-800.jpg 800w, https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c8b13d6e0ca2baa840f9_resources-2.jpg 847w',
+    alt: 'Interactive breakout sessions and roundtable collaboration',
+    caption: 'Interactive Workshops & Tech Sessions'
+  },
+  {
+    id: 3,
+    img: 'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c8c72748e6142d501a46_resources-3.jpg',
+    srcSet:
+      'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c8c72748e6142d501a46_resources-3-p-500.jpg 500w, https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c8c72748e6142d501a46_resources-3-p-800.jpg 800w, https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6881c8c72748e6142d501a46_resources-3.jpg 847w',
+    alt: 'Community networking and summit attendees greeting',
+    caption: 'Community Connections & Socials'
+  }
+];
+
+function ResourcesFromPastConferencesSection() {
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  return (
+    <div className="w-full py-8 sm:py-12 bg-black">
+      <section className="relative mx-3 sm:mx-6 lg:mx-8 xl:mx-12 bg-[#8617d0] text-white py-20 sm:py-28 lg:py-32 rounded-[32px] sm:rounded-[60px] lg:rounded-[80px] overflow-hidden shadow-2xl">
+        {/* Decorative Curved SVG Line Overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden">
+          <svg
+            className="w-full h-full object-cover"
+            viewBox="0 0 1535 1061"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1707.93 -152.316C1764.23 29.1878 1738.08 408.094 1183.13 471.69C628.175 535.286 660.095 923.773 680.661 1113.39C696.051 1255.29 615.025 1665.71 4.8731 1591.9"
+              stroke="white"
+              strokeWidth="60"
+            />
+            <path
+              d="M36.7591 997.712C66.2494 809.982 256.767 481.414 782.914 668.989C1309.06 856.564 1451.68 493.796 1516.82 314.529C1565.56 180.385 1819.23 -152.277 2334.34 182.969"
+              stroke="white"
+              strokeWidth="60"
+            />
+          </svg>
+        </div>
+
+        <div className="relative max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-10 z-10">
+          {/* Title & Two-Tone Subtitle */}
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-4">
+            <h2 className="text-4xl sm:text-5xl lg:text-[62px] font-semibold text-[#fdda7a] tracking-tight leading-tight capitalize">
+              Resources From Past
+              <br className="hidden sm:inline" /> Conferences
+            </h2>
+            <div className="max-w-[506px] mx-auto text-sm sm:text-base font-semibold leading-[1.62]">
+              <span className="text-white">
+                Explore our lineup of keynote speakers and industry{' '}
+              </span>
+              <span className="text-white/60">
+                leaders who will inspire and enlighten at the conference.
+              </span>
+            </div>
+          </div>
+
+          {/* Interactive Expandable Gallery */}
+          <div
+            className="flex flex-row gap-3 sm:gap-4 md:gap-5 h-[340px] sm:h-[450px] md:h-[520px] lg:h-[600px] w-full"
+            onMouseLeave={() => setActiveIdx(0)}
+          >
+            {pastConferenceResources.map((item, idx) => {
+              const isActive = activeIdx === idx;
+              return (
+                <div
+                  key={item.id}
+                  onMouseEnter={() => setActiveIdx(idx)}
+                  onClick={() => setActiveIdx(idx)}
+                  className={`relative rounded-[18px] sm:rounded-[24px] lg:rounded-[32px] overflow-hidden cursor-pointer transition-all duration-500 ease-out ${
+                    isActive
+                      ? 'flex-[2.2] shadow-2xl ring-1 ring-white/20'
+                      : 'flex-1 hover:brightness-105'
+                  }`}
+                >
+                  <img
+                    src={item.img}
+                    srcSet={item.srcSet}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 847px"
+                    alt={item.alt}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent transition-opacity duration-300 ${
+                      isActive ? 'opacity-60' : 'opacity-20'
+                    }`}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+const scheduleData = [
+  {
+    id: 1,
+    time: '09:00 - 10:00 am',
+    title: 'Opening',
+    description:
+      'Kick off the day with a warm welcome from the host. We’ll walk through the schedule, introduce key speakers, and set the tone for an inspiring day.',
+    speakers: []
+  },
+  {
+    id: 2,
+    time: '10.30 - 11.50 am',
+    title: 'Keynote Speech: The Future of Tech',
+    description:
+      'A visionary talk by our headline speaker on where technology is heading—AI, SaaS, and innovation in the digital age.',
+    speakers: [
+      {
+        name: 'Tomislav P.',
+        img: 'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6891acc20a821d240d8c73f9_sd.png'
+      },
+      {
+        name: 'Ethan Zhao',
+        img: 'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6891ad17e238089228940c0b_688b4fcf7eec039af9714996_team-1%20(2).png'
+      }
+    ]
+  },
+  {
+    id: 3,
+    time: '12.00 - 12.50 am',
+    title: 'Live App Showcase',
+    description:
+      'See demos of exciting new SaaS products, apps, and platforms. A mix of startup spotlights and enterprise innovation.',
+    speakers: [
+      {
+        name: 'John Anderson',
+        img: 'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/68807fe3fa2c3b7e74f497a7_f32842e72824373ee91071fc214bd16b_team-1.png'
+      }
+    ]
+  },
+  {
+    id: 4,
+    time: '1.20 - 2:30 pm',
+    title: 'Networking Lunch',
+    description:
+      'Enjoy food, meet other attendees, and make real connections. Swap ideas, business cards, and maybe your next partnership.',
+    speakers: []
+  },
+  {
+    id: 5,
+    time: '3:00 - 4:30 pm',
+    title: 'Building Scalable Products',
+    description:
+      'Top founders and product leads share real stories and strategies on building tools that grow with users and markets.',
+    speakers: [
+      {
+        name: 'Jonathan',
+        img: 'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6891a86d98f9bef9d385160b_6880802c60e7f6881998217f_df20dfb4a6d3c10988d870b3dd6a4aa9_team-2%20(1).png'
+      },
+      {
+        name: 'Ahmed Faizal',
+        img: 'https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6891aac603a49c7db89b4af7_6880802c60e7f6881998217f_df20dfb4a6d3c10988d870b3dd6a4aa9_team-2%20(2).png'
+      }
+    ]
+  },
+  {
+    id: 6,
+    time: '5.00 - 5:30 pm',
+    title: 'Closing Remarks & Next Steps',
+    description:
+      'We’ll recap the day, thank our speakers, and share what’s next—including post-event resources and recordings.',
+    speakers: []
+  }
+];
+
+function ScheduleSection() {
+  return (
+    <section className="relative bg-black text-white py-24 sm:py-32 lg:py-36 border-t border-white/5">
+      <div className="w mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[12px_1fr_420px] xl:grid-cols-[12px_1fr_480px] gap-8 lg:gap-12 xl:gap-14 items-start">
+          {/* Vertical Purple Accent Line (matches Webflow .schedule-border) */}
+          <div className="hidden lg:block w-3 bg-[#8617d0] rounded-full self-stretch min-h-full" />
+
+          {/* Schedule Cards List with Scroll Overlapping Animation */}
+          <div className="flex flex-col gap-8 sm:gap-12 pb-28 sm:pb-36 order-2 lg:order-1 relative">
+            {scheduleData.map((item, idx) => (
+              <div
+                key={item.id}
+                className="sticky rounded-[20px] sm:rounded-[24px] bg-[#0c0c0c] border border-white/[0.1] hover:border-[#8617d0]/50 shadow-[0_-14px_40px_rgba(0,0,0,0.92)] p-7 sm:p-10 lg:p-12 space-y-6 sm:space-y-7 transition-all duration-300"
+                style={{
+                  top: `calc(90px + ${idx * 16}px)`,
+                  zIndex: 10 + idx
+                }}
+              >
+                {/* Time (16px normal, lowercase am/pm) */}
+                <div className="text-sm sm:text-base font-normal text-[#aeaeae]">
+                  {item.time}
+                </div>
+
+                {/* Schedule Title (32px font-medium) */}
+                <h3 className="text-2xl sm:text-[32px] font-medium text-white tracking-tight leading-[1.3]">
+                  {item.title}
+                </h3>
+
+                {/* Speaker Cards (37px circular photo + name, no background box) */}
+                {item.speakers && item.speakers.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-6 pt-1">
+                    {item.speakers.map((sp, sIdx) => (
+                      <div key={sIdx} className="inline-flex items-center gap-2.5">
+                        <div className="w-[37px] h-[37px] rounded-full overflow-hidden flex-shrink-0 bg-zinc-800">
+                          <img
+                            src={sp.img}
+                            alt={sp.name}
+                            loading="lazy"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <span className="text-sm sm:text-[15px] font-normal text-white">
+                          {sp.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Description (16px normal text) */}
+                <p className="text-sm sm:text-base text-[#aeaeae] font-normal leading-[1.6]">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Sticky Header, Description & Buy Ticket CTA */}
+          <div className="order-1 lg:order-2 lg:sticky lg:top-28 space-y-7 lg:pl-4">
+            {/* Huge 3-line heading matching Webflow reference */}
+            <h2 className="text-5xl sm:text-7xl lg:text-[76px] xl:text-[88px] font-medium sm:font-semibold text-white tracking-[-0.02em] leading-[1.02]">
+              Organize
+              <br />
+              Your
+              <br />
+              Schedule
+            </h2>
+
+            {/* Subtitle */}
+            <div className="space-y-1 text-base sm:text-lg leading-[1.6] max-w-[440px]">
+              <p className="text-white font-semibold">
+                Explore our lineup of keynote speakers and industry
+              </p>
+              <p className="text-[#aeaeae]">
+                leaders who will inspire and enlighten at the conference.
+              </p>
+            </div>
+
+            {/* Buy Ticket CTA Button */}
+            <div className="pt-3">
+              <Link
+                to="/events"
+                className="inline-flex items-center gap-3.5 pl-7 pr-2.5 py-2.5 rounded-full bg-white text-black font-semibold text-base hover:bg-zinc-100 transition-all duration-200 group shadow-lg"
+              >
+                <span>Buy Ticket</span>
+                <span className="w-9 h-9 rounded-full bg-[#8617d0] text-white flex items-center justify-center group-hover:scale-105 group-hover:translate-x-0.5 transition-transform duration-200">
+                  <ArrowRight className="w-4 h-4" />
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const pricingPlans = [
+  {
+    tier: 'Basic',
+    price: '$99',
+    cta: 'Get a seat',
+    description:
+      'Explore our lineup of keynote speakers and industry leaders who will inspire and enlighten at the conference.',
+    features: [
+      'Full event access',
+      'Access to keynote & breakout sessions',
+      'Networking opportunities',
+      'Access to post-event session recordings',
+      'Conference materials and swag bag'
+    ]
+  },
+  {
+    tier: 'Premium',
+    price: '$399',
+    cta: 'Get a seat',
+    description:
+      'Explore our lineup of keynote speakers and industry leaders who will inspire and enlighten at the conference.',
+    features: [
+      'Full event access',
+      'Access to keynote & breakout sessions',
+      'Networking opportunities',
+      'Access to post-event session recordings',
+      'Conference materials and swag bag'
+    ]
+  }
+];
+
+function PricingSection() {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'center 55%']
+  });
+
+  const rawYCard1 = useTransform(scrollYProgress, [0.1, 0.85], [70, 0]);
+  const rawYCard2 = useTransform(scrollYProgress, [0.2, 0.95], [120, 0]);
+  const rawOpacity = useTransform(scrollYProgress, [0.1, 0.75], [0.35, 1]);
+  const rawScale = useTransform(scrollYProgress, [0.1, 0.9], [0.95, 1]);
+  const rawHeadY = useTransform(scrollYProgress, [0.05, 0.5], [40, 0]);
+
+  const yCard1 = useSpring(rawYCard1, { stiffness: 75, damping: 22, mass: 0.5 });
+  const yCard2 = useSpring(rawYCard2, { stiffness: 75, damping: 22, mass: 0.5 });
+  const opacity = useSpring(rawOpacity, { stiffness: 75, damping: 22, mass: 0.5 });
+  const scale = useSpring(rawScale, { stiffness: 75, damping: 22, mass: 0.5 });
+  const headY = useSpring(rawHeadY, { stiffness: 75, damping: 22, mass: 0.5 });
+
+  const cardYs = [yCard1, yCard2];
+
+  return (
+    <div className="w-full py-8 sm:py-12 bg-black">
+      <section
+        ref={sectionRef}
+        className="relative mx-3 sm:mx-6 lg:mx-8 xl:mx-12 bg-[#8617d0] text-white py-20 sm:py-28 lg:py-32 rounded-[32px] sm:rounded-[60px] lg:rounded-[80px] overflow-hidden shadow-2xl"
+      >
+        {/* Decorative Curved SVG Line Overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-20 overflow-hidden">
+          <svg
+            className="w-full h-full object-cover"
+            viewBox="0 0 1535 1061"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1707.93 -152.316C1764.23 29.1878 1738.08 408.094 1183.13 471.69C628.175 535.286 660.095 923.773 680.661 1113.39C696.051 1255.29 615.025 1665.71 4.8731 1591.9"
+              stroke="white"
+              strokeWidth="60"
+            />
+            <path
+              d="M36.7591 997.712C66.2494 809.982 256.767 481.414 782.914 668.989C1309.06 856.564 1451.68 493.796 1516.82 314.529C1565.56 180.385 1819.23 -152.277 2334.34 182.969"
+              stroke="white"
+              strokeWidth="60"
+            />
+          </svg>
+        </div>
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+          {/* Section Header with smooth spring entrance */}
+          <motion.div
+            style={{ y: headY, opacity }}
+            className="text-center max-w-3xl mx-auto mb-14 sm:mb-16 space-y-4"
+          >
+            <h2 className="text-4xl sm:text-5xl lg:text-[62px] font-semibold text-[#fdda7a] tracking-tight leading-tight capitalize">
+              Pricing For Tickets
+            </h2>
+            <div className="max-w-[506px] mx-auto text-sm sm:text-base font-semibold leading-[1.62]">
+              <span className="text-white">
+                Explore our lineup of keynote speakers and industry{' '}
+              </span>
+              <span className="text-white/60">
+                leaders who will inspire and enlighten at the conference.
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Pricing Cards Grid with Staggered Scroll Spring Physics */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
+            {pricingPlans.map((plan, idx) => (
+              <motion.div
+                key={idx}
+                style={{
+                  y: cardYs[idx],
+                  opacity,
+                  scale
+                }}
+                className="relative rounded-[28px] sm:rounded-[36px] bg-white/[0.08] backdrop-blur-md border border-white/20 p-8 sm:p-10 lg:p-12 flex flex-col justify-between overflow-hidden shadow-xl hover:bg-white/[0.12] hover:border-white/30 transition-colors duration-300 group"
+              >
+                {/* Decorative Shape in top-right */}
+                <img
+                  src="https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/688496734d2ec455ce583e1e_Vector%20(1).svg"
+                  alt=""
+                  loading="lazy"
+                  className="absolute top-0 right-0 w-44 pointer-events-none opacity-30 group-hover:opacity-40 transition-opacity duration-300"
+                />
+
+                <div className="space-y-6 relative z-10">
+                  {/* Tier Badge */}
+                  <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs sm:text-sm font-semibold text-white/90">
+                    {plan.tier}
+                  </div>
+
+                  {/* Price & CTA Text */}
+                  <div className="flex items-baseline justify-between pt-2">
+                    <span className="text-5xl sm:text-6xl lg:text-[68px] font-bold text-[#fdda7a] tracking-tight">
+                      {plan.price}
+                    </span>
+                    <span className="text-sm sm:text-base text-white/80 font-medium">
+                      {plan.cta}
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-sm sm:text-[15px] text-white/80 leading-relaxed max-w-md">
+                    {plan.description}
+                  </p>
+
+                  {/* Features List */}
+                  <div className="space-y-3.5 pt-4 border-t border-white/15">
+                    {plan.features.map((feat, fIdx) => (
+                      <div key={fIdx} className="flex items-center gap-3">
+                        <img
+                          src="https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/688475c5161faac4bd544101_Star%201.svg"
+                          alt="star"
+                          loading="lazy"
+                          className="w-4 h-4 flex-shrink-0"
+                        />
+                        <span className="text-sm sm:text-[15px] text-white font-medium">
+                          {feat}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Buy Ticket Button */}
+                <div className="pt-8 relative z-10">
+                  <Link
+                    to="/events"
+                    className="w-full inline-flex items-center justify-between pl-8 pr-2.5 py-3 rounded-full bg-white text-black font-bold text-sm sm:text-base hover:bg-zinc-100 transition-all duration-200 group/btn shadow-lg"
+                  >
+                    <span className="mx-auto">Buy Ticket</span>
+                    <span className="w-9 h-9 rounded-full bg-[#8617d0] text-white flex items-center justify-center group-hover/btn:scale-105 group-hover/btn:translate-x-0.5 transition-transform duration-200 flex-shrink-0">
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+const faqColumn1 = [
+  {
+    id: 1,
+    question: 'Will the talks be recorded?',
+    answer:
+      'Yes, all main stage keynotes and panel discussions are recorded in high-definition. Access to post-event recordings is included with your ticket and will be made available in your attendee portal shortly after the event concludes.'
+  },
+  {
+    id: 2,
+    question: 'Is this event just for designers?',
+    answer:
+      'With your ticket, you’ll receive entry to the event and access to all included features. These may range from general admission to VIP perks. Every tier offers something a little different.'
+  },
+  {
+    id: 3,
+    question: 'Does my ticket cover everything?',
+    answer:
+      'Most tickets include access to the main attractions, but some areas, services, or merchandise might require an upgrade. It’s important to verify what’s included to avoid surprises on event day.'
+  },
+  {
+    id: 4,
+    question: 'Can I refund or transfer my ticket?',
+    answer:
+      'Yes! Every ticket includes base-level access to the event. Higher-tier tickets may also include special perks like lounge access, priority entry, or complimentary items.'
+  }
+];
+
+const faqColumn2 = [
+  {
+    id: 5,
+    question: 'What is the conference about ?',
+    answer:
+      'Depending on the level of your ticket, you may receive early access, reserved seating, or bonus gifts. Benefits are designed to enhance your experience and are clearly listed when you book.'
+  },
+  {
+    id: 6,
+    question: 'Are there any perks with my ticket?',
+    answer:
+      'Ticket packages vary but often include entry, merchandise, and access to special areas or experiences. Premium packages may also feature food, drink, or exclusive meet-and-greets.'
+  },
+  {
+    id: 7,
+    question: 'What does my ticket include?',
+    answer:
+      'Of course! Each ticket includes a specific set of features and event access. Check the ticket description for a full breakdown of what is provided with your pass.'
+  },
+  {
+    id: 8,
+    question: 'How to become a speaker?',
+    answer:
+      'Your ticket purchase covers the base cost of entry and any listed amenities. In some cases, it may also include food, drinks, or access to additional activities and spaces.'
+  }
+];
+
+function FAQItem({ item, isOpen, onToggle }) {
+  return (
+    <div className="rounded-[14px] sm:rounded-[18px] bg-[#0c0c0c] border border-white/[0.08] hover:border-[#8617d0]/40 transition-all duration-300 overflow-hidden">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full flex items-center justify-between p-5 sm:p-6 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8617d0]"
+        aria-expanded={isOpen}
+      >
+        <span className="text-sm sm:text-base font-semibold text-white/95 pr-4 leading-snug">
+          {item.question}
+        </span>
+        <Plus
+          className={`w-4 h-4 text-white/70 flex-shrink-0 transition-transform duration-300 ${
+            isOpen ? 'rotate-45 text-[#c084fc]' : ''
+          }`}
+        />
+      </button>
+
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.28, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="overflow-hidden"
+        >
+          <div className="px-5 sm:px-6 pb-5 sm:pb-6 text-sm text-[#aeaeae] leading-relaxed border-t border-white/[0.04] pt-4">
+            <p>{item.answer}</p>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+function FAQSection() {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'center 60%']
+  });
+
+  const [openId, setOpenId] = useState(null);
+
+  const toggle = (id) => {
+    setOpenId((prev) => (prev === id ? null : id));
+  };
+
+  // Header scroll entrance
+  const rawHeadY = useTransform(scrollYProgress, [0.05, 0.45], [40, 0]);
+  const rawOpacity = useTransform(scrollYProgress, [0.08, 0.55], [0.25, 1]);
+  const headY = useSpring(rawHeadY, { stiffness: 75, damping: 22, mass: 0.5 });
+  const opacity = useSpring(rawOpacity, { stiffness: 75, damping: 22, mass: 0.5 });
+
+  // Staggered Y offsets for the 4 rows of questions
+  const rawY0 = useTransform(scrollYProgress, [0.1, 0.6], [50, 0]);
+  const rawY1 = useTransform(scrollYProgress, [0.18, 0.7], [70, 0]);
+  const rawY2 = useTransform(scrollYProgress, [0.26, 0.8], [90, 0]);
+  const rawY3 = useTransform(scrollYProgress, [0.34, 0.9], [110, 0]);
+
+  const y0 = useSpring(rawY0, { stiffness: 75, damping: 22, mass: 0.5 });
+  const y1 = useSpring(rawY1, { stiffness: 75, damping: 22, mass: 0.5 });
+  const y2 = useSpring(rawY2, { stiffness: 75, damping: 22, mass: 0.5 });
+  const y3 = useSpring(rawY3, { stiffness: 75, damping: 22, mass: 0.5 });
+
+  const rowYs = [y0, y1, y2, y3];
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative bg-black text-white py-24 sm:py-32 border-t border-white/5"
+    >
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.h2
+          style={{ y: headY, opacity }}
+          className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight text-center mb-14 sm:mb-20"
+        >
+          Frequently Asked Questions
+        </motion.h2>
+
+        {/* 2-Column Accordion Grid with Staggered Scroll Animation */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 items-start">
+          {/* Column 1 */}
+          <div className="flex flex-col gap-4 sm:gap-5">
+            {faqColumn1.map((item, idx) => (
+              <motion.div
+                key={item.id}
+                style={{ y: rowYs[idx], opacity }}
+              >
+                <FAQItem
+                  item={item}
+                  isOpen={openId === item.id}
+                  onToggle={() => toggle(item.id)}
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Column 2 */}
+          <div className="flex flex-col gap-4 sm:gap-5">
+            {faqColumn2.map((item, idx) => (
+              <motion.div
+                key={item.id}
+                style={{ y: rowYs[idx], opacity }}
+              >
+                <FAQItem
+                  item={item}
+                  isOpen={openId === item.id}
+                  onToggle={() => toggle(item.id)}
+                />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
