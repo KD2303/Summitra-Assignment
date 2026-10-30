@@ -195,25 +195,25 @@ export function LandingPage() {
       {/* ============================================================== */}
       {/* 3. ABOUT SECTION WITH COUNTDOWN (Exact Webflow Proportions) */}
       {/* ============================================================== */}
-      <section className="relative bg-black max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 lg:pt-40 pb-20 sm:pb-28 overflow-hidden">
+      <section className="relative bg-black max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 lg:pt-40 pb-16 sm:pb-28 overflow-hidden">
         {/* Background Decorative Ellipse */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <img
             src="https://cdn.prod.website-files.com/687f5648b07a8b67bf809294/6880a791735d2e2ce92c8243_Ellipse%204.svg"
             alt=""
             loading="lazy"
-            className="absolute top-0 right-0 max-w-lg opacity-40 pointer-events-none"
+            className="absolute top-0 right-0 max-w-[260px] sm:max-w-lg opacity-40 pointer-events-none"
           />
         </div>
 
         <div className="relative max-w-[1160px] mx-auto z-10">
           {/* Section Title */}
-          <h2 className="text-6xl sm:text-7xl lg:text-[90px] xl:text-[96px] font-medium text-white tracking-[-0.02em] leading-none mb-10 sm:mb-14 lg:mb-16">
+          <h2 className="text-[52px] sm:text-7xl lg:text-[90px] xl:text-[96px] font-medium text-white tracking-[-0.02em] leading-none mb-7 sm:mb-14 lg:mb-16">
             About
           </h2>
 
           {/* Large Editorial Statement */}
-          <div className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] xl:text-[48px] font-medium leading-[1.28] tracking-[-0.03em]">
+          <div className="text-xl sm:text-3xl md:text-4xl lg:text-[46px] xl:text-[48px] font-medium leading-[1.35] sm:leading-[1.28] tracking-[-0.02em] sm:tracking-[-0.03em]">
             <span className="text-white">
               Summitra 2025 is an immersive, IT Conference over the course of
               three days,{' '}
@@ -221,57 +221,57 @@ export function LandingPage() {
             <span className="text-[#a278d9]">August 13-15.</span>
             <span className="text-white"> Our mission,</span>
             <span className="text-[#747070]">
-              the challenges, A person's success is measured by the way they
+              {' '}the challenges, A person's success is measured by the way they
               approach it and how they approach it.
             </span>
           </div>
 
-          {/* Countdown Timer on Left & Buy Ticket on Right (Aligned to Bottom) */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8 mt-14 sm:mt-16 lg:mt-20">
-            {/* 4 Dark Aspect-Ratio Countdown Boxes */}
-            <div className="grid grid-cols-4 gap-2.5 sm:gap-3.5">
-              <div className="w-[74px] h-[74px] sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-[10px] sm:rounded-xl flex flex-col items-center justify-center p-2">
-                <div className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
+          {/* Countdown Timer + Buy Ticket */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8 mt-10 sm:mt-16 lg:mt-20">
+            {/* 4 Dark Aspect-Ratio Countdown Boxes — 2×2 on mobile, 4-in-a-row on sm+ */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-3.5 w-full sm:w-auto">
+              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-xl flex flex-col items-center justify-center p-2">
+                <div className="text-3xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.days).padStart(2, '0')}
                 </div>
-                <div className="text-[11px] sm:text-[15px] text-[#a3a3a3] font-normal mt-1 sm:mt-2">
+                <div className="text-xs sm:text-[15px] text-[#a3a3a3] font-normal mt-2">
                   Days
                 </div>
               </div>
 
-              <div className="w-[74px] h-[74px] sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-[10px] sm:rounded-xl flex flex-col items-center justify-center p-2">
-                <div className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
+              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-xl flex flex-col items-center justify-center p-2">
+                <div className="text-3xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.hours).padStart(2, '0')}
                 </div>
-                <div className="text-[11px] sm:text-[15px] text-[#a3a3a3] font-normal mt-1 sm:mt-2">
+                <div className="text-xs sm:text-[15px] text-[#a3a3a3] font-normal mt-2">
                   Hours
                 </div>
               </div>
 
-              <div className="w-[74px] h-[74px] sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-[10px] sm:rounded-xl flex flex-col items-center justify-center p-2">
-                <div className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
+              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-xl flex flex-col items-center justify-center p-2">
+                <div className="text-3xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.minutes).padStart(2, '0')}
                 </div>
-                <div className="text-[11px] sm:text-[15px] text-[#a3a3a3] font-normal mt-1 sm:mt-2">
+                <div className="text-xs sm:text-[15px] text-[#a3a3a3] font-normal mt-2">
                   Minutes
                 </div>
               </div>
 
-              <div className="w-[74px] h-[74px] sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-[10px] sm:rounded-xl flex flex-col items-center justify-center p-2">
-                <div className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
+              <div className="w-full sm:w-[110px] sm:h-[110px] lg:w-[124px] lg:h-[124px] aspect-square bg-[#111111] rounded-xl flex flex-col items-center justify-center p-2">
+                <div className="text-3xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight leading-none">
                   {String(timeLeft.seconds).padStart(2, '0')}
                 </div>
-                <div className="text-[11px] sm:text-[15px] text-[#a3a3a3] font-normal mt-1 sm:mt-2">
+                <div className="text-xs sm:text-[15px] text-[#a3a3a3] font-normal mt-2">
                   Seconds
                 </div>
               </div>
             </div>
 
-            {/* Buy Ticket Pill Button */}
-            <div className="self-end sm:self-auto">
+            {/* Buy Ticket Pill Button — full-width on mobile, auto on sm+ */}
+            <div className="w-full sm:w-auto">
               <Link
                 to="/events"
-                className="inline-flex items-center gap-3.5 pl-7 pr-2.5 py-3 rounded-full bg-white text-black font-semibold text-base hover:bg-zinc-100 transition-all duration-200 shadow-xl group"
+                className="flex sm:inline-flex items-center justify-center gap-3.5 pl-7 pr-2.5 py-3 rounded-full bg-white text-black font-semibold text-base hover:bg-zinc-100 transition-all duration-200 shadow-xl group"
               >
                 <span>Buy Ticket</span>
                 <span className="w-9 h-9 rounded-full bg-[#8617d0] text-white flex items-center justify-center group-hover:scale-105 group-hover:translate-x-0.5 transition-transform duration-200">
@@ -866,39 +866,42 @@ const scheduleData = [
 
 function ScheduleSection() {
   return (
-    <section className="relative bg-black text-white py-24 sm:py-32 lg:py-36 border-t border-white/5">
-      <div className="w mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative bg-black text-white py-16 sm:py-24 lg:py-36 border-t border-white/5">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* Mobile: heading + CTA first, then cards below */}
+        {/* Desktop: purple line | cards | sticky heading */}
         <div className="grid grid-cols-1 lg:grid-cols-[12px_1fr_420px] xl:grid-cols-[12px_1fr_480px] gap-8 lg:gap-12 xl:gap-14 items-start">
-          {/* Vertical Purple Accent Line (matches Webflow .schedule-border) */}
+          {/* Vertical Purple Accent Line (desktop only) */}
           <div className="hidden lg:block w-3 bg-[#8617d0] rounded-full self-stretch min-h-full" />
 
-          {/* Schedule Cards List with Scroll Overlapping Animation */}
-          <div className="flex flex-col gap-8 sm:gap-12 pb-28 sm:pb-36 order-2 lg:order-1 relative">
+          {/* Schedule Cards List */}
+          <div className="flex flex-col gap-4 sm:gap-8 pb-8 sm:pb-28 sm:pb-36 order-2 lg:order-1 relative">
             {scheduleData.map((item, idx) => (
               <div
                 key={item.id}
-                className="sticky rounded-[20px] sm:rounded-[24px] bg-[#0c0c0c] border border-white/[0.1] hover:border-[#8617d0]/50 shadow-[0_-14px_40px_rgba(0,0,0,0.92)] p-7 sm:p-10 lg:p-12 space-y-6 sm:space-y-7 transition-all duration-300"
+                className="sm:sticky rounded-[16px] sm:rounded-[24px] bg-[#0c0c0c] border border-white/[0.1] hover:border-[#8617d0]/50 shadow-[0_-14px_40px_rgba(0,0,0,0.92)] p-5 sm:p-10 lg:p-12 space-y-4 sm:space-y-7 transition-all duration-300"
                 style={{
                   top: `calc(90px + ${idx * 16}px)`,
                   zIndex: 10 + idx
                 }}
               >
-                {/* Time (16px normal, lowercase am/pm) */}
-                <div className="text-sm sm:text-base font-normal text-[#aeaeae]">
+                {/* Time */}
+                <div className="text-xs sm:text-base font-normal text-[#aeaeae]">
                   {item.time}
                 </div>
 
-                {/* Schedule Title (32px font-medium) */}
-                <h3 className="text-2xl sm:text-[32px] font-medium text-white tracking-tight leading-[1.3]">
+                {/* Title */}
+                <h3 className="text-lg sm:text-[32px] font-medium text-white tracking-tight leading-[1.3]">
                   {item.title}
                 </h3>
 
-                {/* Speaker Cards (37px circular photo + name, no background box) */}
+                {/* Speaker Cards */}
                 {item.speakers && item.speakers.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-6 pt-1">
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-1">
                     {item.speakers.map((sp, sIdx) => (
-                      <div key={sIdx} className="inline-flex items-center gap-2.5">
-                        <div className="w-[37px] h-[37px] rounded-full overflow-hidden flex-shrink-0 bg-zinc-800">
+                      <div key={sIdx} className="inline-flex items-center gap-2">
+                        <div className="w-8 h-8 sm:w-[37px] sm:h-[37px] rounded-full overflow-hidden flex-shrink-0 bg-zinc-800">
                           <img
                             src={sp.img}
                             alt={sp.name}
@@ -906,7 +909,7 @@ function ScheduleSection() {
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <span className="text-sm sm:text-[15px] font-normal text-white">
+                        <span className="text-xs sm:text-[15px] font-normal text-white">
                           {sp.name}
                         </span>
                       </div>
@@ -914,18 +917,18 @@ function ScheduleSection() {
                   </div>
                 )}
 
-                {/* Description (16px normal text) */}
-                <p className="text-sm sm:text-base text-[#aeaeae] font-normal leading-[1.6]">
+                {/* Description */}
+                <p className="text-xs sm:text-base text-[#aeaeae] font-normal leading-[1.6]">
                   {item.description}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Sticky Header, Description & Buy Ticket CTA */}
-          <div className="order-1 lg:order-2 lg:sticky lg:top-28 space-y-7 lg:pl-4">
-            {/* Huge 3-line heading matching Webflow reference */}
-            <h2 className="text-5xl sm:text-7xl lg:text-[76px] xl:text-[88px] font-medium sm:font-semibold text-white tracking-[-0.02em] leading-[1.02]">
+          {/* Sticky Header + Buy Ticket CTA — stacks above cards on mobile */}
+          <div className="order-1 lg:order-2 lg:sticky lg:top-28 space-y-5 sm:space-y-7 lg:pl-4">
+            {/* Heading */}
+            <h2 className="text-4xl sm:text-7xl lg:text-[76px] xl:text-[88px] font-semibold text-white tracking-[-0.02em] leading-[1.05]">
               Organize
               <br />
               Your
@@ -934,7 +937,7 @@ function ScheduleSection() {
             </h2>
 
             {/* Subtitle */}
-            <div className="space-y-1 text-base sm:text-lg leading-[1.6] max-w-[440px]">
+            <div className="space-y-1 text-sm sm:text-lg leading-[1.6] max-w-[440px]">
               <p className="text-white font-semibold">
                 Explore our lineup of keynote speakers and industry
               </p>
@@ -943,8 +946,8 @@ function ScheduleSection() {
               </p>
             </div>
 
-            {/* Buy Ticket CTA Button */}
-            <div className="pt-3">
+            {/* Buy Ticket CTA */}
+            <div className="pt-1 sm:pt-3">
               <Link
                 to="/events"
                 className="inline-flex items-center gap-3.5 pl-7 pr-2.5 py-2.5 rounded-full bg-white text-black font-semibold text-base hover:bg-zinc-100 transition-all duration-200 group shadow-lg"
