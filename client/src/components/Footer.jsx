@@ -51,14 +51,7 @@ export function Footer() {
             <div className="px-5 sm:px-7 py-2.5 sm:py-3 rounded-full border border-white/40 text-white text-sm sm:text-lg font-normal tracking-tight whitespace-nowrap self-start select-none">
               August 20
             </div>
-            <div className="space-y-0.5 sm:space-y-1">
-              <h2 className="text-2xl sm:text-4xl lg:text-[46px] font-semibold text-[#fdda7a] tracking-tight leading-[1.1]">
-                Largest 2025 IT
-              </h2>
-              <h2 className="text-2xl sm:text-4xl lg:text-[46px] font-semibold text-[#fdda7a] tracking-tight leading-[1.1]">
-                Conference.
-              </h2>
-            </div>
+            
           </div>
         </div>
 
